@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Todo Application</string>
+    <string name="todo_et_hint">Eg: Washing, doing homework :(....</string>
+    <string name="due_date_text_view_val">Due Date</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="today">Today</string>
+    <string name="high_radio_priority">High</string>
+    <string name="fab_content_desc">This is an android application designed for an university project.</string>
+    <string name="about">About</string>
+    <string name="string_about">V: 1.0.0</string>
+</resources>
