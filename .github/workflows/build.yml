@@ -3,8 +3,26 @@ on:
   pull_request:
     types: [ opened, synchronize, reopened ]
 jobs:
-  build:
+  checkstyle:
+    name: Checkstyle validation
+    runs-on: ubuntu-latest
 
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Set Up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Change wrapper permissions
+        run: chmod +x ./gradlew
+
+      - name: Run Checkstyle Verification
+        run: ./gradlew verGJF
+  build:
+    name: Building the project
+    needs: checkstyle
     runs-on: ubuntu-latest
 
     steps:
