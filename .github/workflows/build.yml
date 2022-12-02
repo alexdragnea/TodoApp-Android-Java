@@ -4,6 +4,7 @@ on:
     types: [ opened, synchronize, reopened ]
 jobs:
   checkstyle:
+    name: Checkstyle validation
     runs-on: ubuntu-latest
 
     steps:
@@ -20,6 +21,7 @@ jobs:
       - name: Run Checkstyle Verification
         run: ./gradlew verGJF
   build:
+    name: Building the project
     needs: checkstyle
     runs-on: ubuntu-latest
 
