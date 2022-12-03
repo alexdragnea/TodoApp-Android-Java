@@ -51,6 +51,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             new int[] {Color.LTGRAY, Utilis.priorityColor(currTask)});
 
     holder.row_text_view.setText(currTask.getTask().trim());
+    holder.priority.setText(currTask.getPriority().toString());
     holder.row_chip_btn.setText(formattedDate.trim());
     holder.row_chip_btn.setChipIconTint(colorStateList);
     holder.row_radio_btn.setButtonTintList(colorStateList);
@@ -65,6 +66,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
   public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     private final OnToDoClickListener onToDoClickListener;
     private final AppCompatTextView row_text_view;
+    private final AppCompatTextView priority;
     private final AppCompatRadioButton row_radio_btn;
     private final Chip row_chip_btn;
 
@@ -73,6 +75,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
       row_text_view = itemView.findViewById(R.id.rowxml_todo_textview);
       row_radio_btn = itemView.findViewById(R.id.rowxml_radio_button);
       row_chip_btn = itemView.findViewById(R.id.rowxml_todo_chip);
+      priority = itemView.findViewById(R.id.rowxml_priorty);
       this.onToDoClickListener = toDoClickListener;
 
       // setting the specific clicks in the recycler view.
