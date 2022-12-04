@@ -42,7 +42,7 @@ jobs:
       - name: Build Project
         run: ./gradlew assemble
 
-  build:
+  builde:
     name: Test
     runs-on: ubuntu-latest
 
