@@ -28,10 +28,10 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="3dp"
         android:layout_marginTop="58dp"
-        android:visibility="visible"
-        />
+        android:padding="3dp"
+        android:visibility="visible" />
+
     <com.airbnb.lottie.LottieAnimationView
         android:layout_width="400dp"
         android:layout_height="400dp"
@@ -44,21 +44,42 @@
         app:lottie_loop="true"
         />
 
+    <!--
+        Add recylce view..........
+   -->
+
     <ImageView
         android:id="@+id/fab_button"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:layout_margin="16dp"
         android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/fab_content_desc"
         android:elevation="16dp"
         android:outlineAmbientShadowColor="@color/black"
         app:srcCompat="@drawable/ic_baseline_add_circle_24"
+        tools:ignore="Content Description" />
+
+    <include layout="@layout/bottom_sheet"/>
+
+    <!--
+         Add recylce view..........
+    -->
+
+    <ImageView
+        android:id="@+id/notification_button"
+        android:layout_width="168dp"
+        android:layout_height="70dp"
+        android:layout_gravity="bottom"
+        android:layout_margin="16dp"
         android:contentDescription="@string/fab_content_desc"
-        tools:ignore="Content Description"
-        />
-   <!--
-        Add recylce view..........
-   -->
+        android:elevation="16dp"
+        android:outlineAmbientShadowColor="@color/black"
+        app:layout_anchor="@+id/fab_button"
+        app:layout_anchorGravity="center"
+        app:srcCompat="@drawable/ic_baseline_add_circle_24"
+        tools:ignore="Content Description" />
+
     <include layout="@layout/bottom_sheet"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

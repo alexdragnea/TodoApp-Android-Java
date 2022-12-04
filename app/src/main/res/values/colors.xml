@@ -12,4 +12,7 @@
     <color name="status_bar">#16E45F</color>
     <color name="text_color">#010828</color>
     <color name="divider_color">#878890</color>
+    <color name="cardwhite">#FFFFFF</color>
+    <color name="lightblack">#7C7878</color>
+    <color name="lightblue">#6491B5</color>
 </resources>

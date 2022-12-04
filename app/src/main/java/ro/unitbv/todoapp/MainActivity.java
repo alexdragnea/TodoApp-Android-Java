@@ -1,5 +1,6 @@
 package ro.unitbv.todoapp;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,12 +33,16 @@ public class MainActivity extends AppCompatActivity implements OnToDoClickListen
   private TaskViewModel taskViewModel;
   private SharedViewModel sharedViewModel;
   private ImageView floatingButton;
+  ImageView mCreateRem;
   private RecyclerView recyclerView;
   private RecyclerViewAdapter recyclerViewAdapter;
   private EditText todo_edit_text;
   private ConstraintLayout todoRowLayout;
 
   private AlertDialog.Builder deleteDialog;
+
+  public static final String NOTIFICATION_CHANNEL_ID = "10001";
+  private static final String default_notification_channel_id = "default";
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +51,17 @@ public class MainActivity extends AppCompatActivity implements OnToDoClickListen
 
     floatingButton = findViewById(R.id.fab_button);
     todo_edit_text = findViewById(R.id.todo_et);
+
+    mCreateRem =
+        findViewById(R.id.notification_button); // Floating action button to change activity
+    mCreateRem.setOnClickListener(
+        new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+            Intent intent = new Intent(getApplicationContext(), ReminderActivity.class);
+            startActivity(intent); // Starts the new activity to add Reminders
+          }
+        });
     LottieAnimationView lottieAnimationView = findViewById(R.id.lottie_animation);
 
     // animation
@@ -53,19 +69,9 @@ public class MainActivity extends AppCompatActivity implements OnToDoClickListen
     // setting the toolbar
     Toolbar toolbar = findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
-    if (getSupportActionBar() != null) {
-      getSupportActionBar()
-          .setSubtitle(
-              "\uD835\uDE48\uD835\uDE6E\uD835\uDE4F\uD835\uDE64\uD835\uDE59\uD835\uDE64-\uD835\uDE47\uD835\uDE5E\uD835\uDE68\uD835\uDE69");
-    }
     int white = Color.parseColor("#ffffff");
     int yellow = Color.parseColor("#EEE311");
     toolbar.setTitleTextColor(white);
-    toolbar.setSubtitle(
-        "\uD835\uDCDC\uD835\uDCEA\uD835\uDCF7\uD835\uDCEA\uD835\uDCF0\uD835\uDCEE \uD835\uDCE3\uD835\uDCEA\uD835\uDCFC\uD835\uDCF4 \uD835\uDCE6\uD835\uDCF2\uD835\uDCFC\uD835\uDCEE\uD835\uDCF5\uD835\uDD02");
-    // toolbar.setSubtitle("\uD835\uDCDC\uD835\uDCEA\uD835\uDCF7\uD835\uDCEA\uD835\uDCF0\uD835\uDCEE
-    // \uD835\uDCE3\uD835\uDCEA\uD835\uDCFC\uD835\uDCF4
-    // \uD835\uDCE6\uD835\uDCF2\uD835\uDCFC\uD835\uDCEE\uD835\uDCF5\uD835\uDD02");
     toolbar.setSubtitleTextColor(yellow);
 
     taskViewModel =
@@ -139,6 +145,7 @@ public class MainActivity extends AppCompatActivity implements OnToDoClickListen
     if (id == R.id.action_settings) {
       return true;
     }
+
     return super.onOptionsItemSelected(item);
   }
 
@@ -188,4 +195,27 @@ public class MainActivity extends AppCompatActivity implements OnToDoClickListen
   public void chipOnClick(Task task) {
     Snackbar.make(floatingButton, task.getTask(), Snackbar.LENGTH_SHORT).show();
   }
+
+  //  private void scheduleNotification(Notification notification, int delay) {
+  //    Intent notificationIntent = new Intent(this, NotificationPublisher.class);
+  //    notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, 1);
+  //    notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
+  //    PendingIntent pendingIntent =
+  //        PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_MUTABLE);
+  //    long futureInMillis = SystemClock.elapsedRealtime() + delay;
+  //    AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+  //    assert alarmManager != null;
+  //    alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
+  //  }
+  //
+  //  private Notification getNotification(String content) {
+  //    NotificationCompat.Builder builder =
+  //        new NotificationCompat.Builder(this, default_notification_channel_id);
+  //    builder.setContentTitle("Scheduled Notification");
+  //    builder.setContentText(content);
+  //    builder.setSmallIcon(R.drawable.ic_launcher_foreground);
+  //    builder.setAutoCancel(true);
+  //    builder.setChannelId(NOTIFICATION_CHANNEL_ID);
+  //    return builder.build();
+  //  }
 }
