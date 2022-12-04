@@ -43,7 +43,7 @@ jobs:
         run: ./gradlew assemble
 
   build:
-
+    name: Test
     runs-on: ubuntu-latest
 
     steps:
