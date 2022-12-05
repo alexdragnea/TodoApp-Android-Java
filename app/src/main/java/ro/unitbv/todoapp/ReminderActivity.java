@@ -7,6 +7,8 @@ import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -84,8 +86,7 @@ public class ReminderActivity extends AppCompatActivity {
                         getApplicationContext(), "Please select date and time", Toast.LENGTH_SHORT)
                     .show();
               } else {
-                  setAlarm(title, date, time);
-//                scheduleNotification(getNotification(title), title, date, time);
+                scheduleNotification(getNotification(title), date, time);
                 Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
               }
             }
@@ -165,79 +166,53 @@ public class ReminderActivity extends AppCompatActivity {
     return time;
   }
 
-    private void setAlarm(String text, String date, String time) {
-      AlarmManager am =
-          (AlarmManager)
-              getSystemService(
-                  Context.ALARM_SERVICE); // assigining alaram manager object to set alaram
+  private void scheduleNotification(Notification notification, String date, String time) {
+    Intent notificationIntent = new Intent(this, NotificationPublisher.class);
+    notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, 1);
+    notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
 
-      Intent intent = new Intent(getApplicationContext(), NotificationPublisher.class);
-      intent.putExtra(
-          "event", text); // sending data to alarm class to create channel and notification
-      intent.putExtra("time", date);
-      intent.putExtra("date", time);
+    Random random = new Random();
 
-      PendingIntent pendingIntent =
-          PendingIntent.getBroadcast(getApplicationContext(), 0, intent,
-   PendingIntent.FLAG_MUTABLE);
-      String dateandtime = date + " " + timeTonotify;
-      DateFormat formatter = new SimpleDateFormat("d-M-yyyy hh:mm");
-      try {
-        Date date1 = formatter.parse(dateandtime);
-        am.set(AlarmManager.RTC_WAKEUP, date1.getTime(), pendingIntent);
-        Toast.makeText(getApplicationContext(), "Alaram", Toast.LENGTH_SHORT).show();
+    int number = random.nextInt(10000);
 
-      } catch (ParseException e) {
-        e.printStackTrace();
-      }
+    String dateandtime = date + " " + timeTonotify;
+    DateFormat formatter = new SimpleDateFormat("d-M-yyyy hh:mm");
 
-      Intent intentBack =
-          new Intent(
-              getApplicationContext(),
-              MainActivity.class);
-      intentBack.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-      startActivity(intentBack); // navigates from adding reminder activity ot mainactivity
+    PendingIntent pendingIntent =
+        PendingIntent.getBroadcast(this, number, notificationIntent, PendingIntent.FLAG_MUTABLE);
+    AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+    assert alarmManager != null;
+    try {
+      Date date1 = formatter.parse(dateandtime);
+      alarmManager.set(AlarmManager.RTC_WAKEUP, date1.getTime(), pendingIntent);
+      Toast.makeText(getApplicationContext(), "Alaram", Toast.LENGTH_SHORT).show();
+
+    } catch (ParseException e) {
+      e.printStackTrace();
     }
-//  private void scheduleNotification(
-//      Notification notification, String text, String date, String time) {
-//    Intent notificationIntent = new Intent(this, NotificationPublisher.class);
-//    notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, 1);
-//    notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
-//
-//    String dateandtime = date + " " + timeTonotify;
-//    DateFormat formatter = new SimpleDateFormat("d-M-yyyy hh:mm");
-//
-//    PendingIntent pendingIntent =
-//        PendingIntent.getBroadcast(this, Math.random(), notificationIntent, PendingIntent.FLAG_MUTABLE);
-//    AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-//    assert alarmManager != null;
-//    try {
-//      Date date1 = formatter.parse(dateandtime);
-//      alarmManager.set(AlarmManager.RTC_WAKEUP, date1.getTime(), pendingIntent);
-//      Toast.makeText(getApplicationContext(), "Alaram", Toast.LENGTH_SHORT).show();
-//
-//    } catch (ParseException e) {
-//      e.printStackTrace();
-//    }
-//
-//    Intent intentBack = new Intent(getApplicationContext(), MainActivity.class);
-//    intentBack.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//    startActivity(intentBack); // navigates from adding reminder activity ot mainactivity
-//  }
-//
-//  private Notification getNotification(String content) {
-//    NotificationCompat.Builder builder =
-//        new NotificationCompat.Builder(this, default_notification_channel_id);
-//    builder.setContentTitle("Reminder2");
-//    builder.setSmallIcon(R.drawable.alaram);
-//    builder.setContentText("ToDo Reminder: " + content);
-//    builder.setAutoCancel(true);
-//    builder.setOngoing(true);
-//    builder.setAutoCancel(true);
-//    builder.setPriority(Notification.PRIORITY_HIGH);
-//    builder.setOnlyAlertOnce(true);
-//    builder.setAutoCancel(true);
-//    builder.setChannelId(NOTIFICATION_CHANNEL_ID);
-//    return builder.build();
-//  }
+
+    Intent intentBack = new Intent(getApplicationContext(), MainActivity.class);
+    intentBack.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+    startActivity(intentBack); // navigates from adding reminder activity ot mainactivity
+  }
+
+  private Notification getNotification(String content) {
+    NotificationCompat.Builder builder =
+        new NotificationCompat.Builder(this, default_notification_channel_id);
+
+    Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+    builder.setContentTitle("Reminder");
+    builder.setSmallIcon(R.drawable.alaram);
+    builder.setContentText("ToDo: " + content);
+    builder.setAutoCancel(true);
+    builder.setOngoing(true);
+    builder.setAutoCancel(true);
+    builder.setPriority(Notification.PRIORITY_HIGH);
+    builder.setOnlyAlertOnce(true);
+    builder.setSound(alarmSound);
+    builder.setAutoCancel(true);
+    builder.setChannelId(NOTIFICATION_CHANNEL_ID);
+    return builder.build();
+  }
 }

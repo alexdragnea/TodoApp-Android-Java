@@ -1,22 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/action_settings"
-        android:title="@string/string_about"
-        />
+        android:title="@string/string_about" />
 
-    <item
-        android:id = "@+id/action_5"
-        app:showAsAction = "never"
-        android:title = "5 seconds" />
-    <item
-        android:id = "@+id/action_10"
-        app:showAsAction = "never"
-        android:title = "10 seconds" />
-    <item
-        android:id = "@+id/action_30"
-        app:showAsAction = "never"
-        android:title = "30 seconds" />
 </menu>
